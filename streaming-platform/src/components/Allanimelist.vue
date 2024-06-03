@@ -1,10 +1,8 @@
 <template>
-
-<div>
-  <v-img cover width="150px" height="200px" :src=props.source></v-img>
-  <p>{{ props.title }}</p>
-</div>
-
+<v-card style="width: fit-content;" class="rounded-lg mt-5 mb-5" >
+  <v-img cover width="199px" height="277px" :src=props.source></v-img>
+  <p class="ma-5" rounded="lg" style="width: 150px;"> {{ props.title }}</p>
+</v-card>
 
 </template>
 
