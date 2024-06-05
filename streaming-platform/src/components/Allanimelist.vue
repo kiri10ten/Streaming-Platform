@@ -8,6 +8,6 @@
 
 <script setup lang="ts">
 
-const props = defineProps<  {source: string
+const props = defineProps<{source: string
   title:string}>()
 </script>

@@ -1,39 +1,61 @@
 <template>
-  <div>
-    
-    <v-row >
-      <v-col v-for="(anime, index) in allanimelist"   :key="index" cols="3">
-      <v-card width="fit-content" class="pa-5 ma-3" >
+  <div  >
+    <v-row ref="el">
+      <v-col  v-for="(anime, index) in loadinganime" :key="index" cols="3">
+        <v-card width="fit-content" class="pa-5 ma-3">
+          <div class="d-flex flex-column">
+            {{ anime.Name }}
+          </div>
 
-        <div class="d-flex flex-column">
-        <img :src="anime.images.jpg.image_url" />
-        {{ anime.title }}
-      </div>
-</v-card>
-</v-col>
-</v-row>
-  
+          <!-- <img :src=" "> -->
+        </v-card>
+      </v-col>
+      </v-row>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue';
-  import { useFetch } from '@vueuse/core';
+import { ref, onMounted, onUnmounted } from 'vue';
+import { useInfiniteScroll } from '@vueuse/core';
 
-  const allanimelist = ref([]);
+const allanimelist = ref([]);
+const loadinganime = ref([]);
+const el = ref<HTMLElement | null>(null);
+let start = 0;
+let n =1
+const fetchData = async () => {
+  try {
+    const response = await fetch(`http://localhost:3000/data?_page=${n}&_per_page=10`);
 
-  const fetchData = async () => {
-    try {
-      for (let i = 1; i <= 500; i++) {
-        const { data } = await useFetch(`https://api.jikan.moe/v4/anime/${i}/full`).json();
-        if (data.value) {
-          allanimelist.value.push(data.value.data);
-        }
-      }
-    } catch (error) {
-      console.error(error);
+    if (response.ok) {
+      const data = await response.json();''
+      console.log(data.data);
+      loadinganime.value.push(...data.data);
+      console.log(loadinganime.value);
+    } else {
+      console.error(`Error fetching data: ${response.statusText}`);
     }
-  };
+  } catch (error) {
+    console.error(error);
+  } 
+};
 
-  fetchData();
+
+
+useInfiniteScroll(
+  el,
+  () => {
+      n=n+1
+      if( n<=3){
+      fetchData();
+      console.log("Infinite scroll triggered");
+      }
+    
+  },
+  { distance: 1 } 
+);
+
+onMounted(async () => {
+   await fetchData();
+});
 </script>
