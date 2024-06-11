@@ -1,11 +1,11 @@
 <template>
 
-    <div class="d-flex flex-column mr-8">
+    <div    class="d-flex flex-column mr-8">
     <h1 class="w-100 pt-3 mb-5"> Top   10 Animes</h1>
 
    <div class="pb-3"  v-for="(anime,i) in topanime">
   
-    <v-card border="md"  class="d-flex ga-3">
+    <v-card @click="goToAnime(anime.mal_id)" border="md"  class="d-flex ga-3">
         <div style="width: 20%;" class="d-flex align-center pa-5 text-h2 ">
  {{ i+1 }}
     </div>
@@ -35,8 +35,16 @@
   <script setup lang="ts">
   import { useFetch } from '@vueuse/core';
   import { ref } from 'vue';
-  
+  import { useRouter } from 'vue-router';
+  const router = useRouter();
   const topanime = ref(null);
+
+
+
+  const goToAnime = (id: number) => {
+    console.log(id);
+    router.push('/anime/' + id);
+  };
   
   const fetchData = async () => {
     try {
@@ -49,5 +57,7 @@
     }
   };
   
+
+ 
   fetchData();
   </script>

@@ -34,13 +34,22 @@
         </v-row>
       </div>
       <TopAnimeList style="width: 100%;" />
+
     </div>
+    <div class="d-flex ga-12 ma-4">
+      <div>
+    <Review></Review>
+  </div>
+    <TopAnimeCharacters/>
+  </div>
   </div>
 </template>
 
 <script setup>
-import Allanimelist from '@/components/Allanimelist.vue';
 import TopAnimeList from '@/components/TopAnimeList.vue';
+import Review from '@/components/Review.vue';
+import TopAnimeCharacters from '@/components/TopAnimeCharacters.vue';
+
 import { ref, onMounted, onBeforeMount } from 'vue';
 const animeList = ref([]);
 const firstfive = ref();
